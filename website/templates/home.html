@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Omni-at English offers warm, confidence-building English tutoring for young learners.">
+    <title>Omni-at | Learn with confidence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="#" aria-label="Omni-at English home">
+            <img src="{% static 'assets/omni-at-logo.png' %}" alt="Omni-at">
+        </a>
+        <nav aria-label="Main navigation">
+            <a href="#programmes">Programmes</a>
+            <a href="#approach">How we teach</a>
+            <a href="#stories">Success stories</a>
+            <a href="#about">About us</a>
+        </nav>
+        <a class="button button-small" href="#trial">Book a free trial <span>→</span></a>
+        <button class="menu-button" aria-label="Open menu">☰</button>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <div class="eyebrow"><span>✦</span> Speak clearly. Read boldly. Grow confidently.</div>
+                <h1>English lessons<br>they’ll <em>love coming to.</em></h1>
+                <p class="hero-text">Personal English tutoring for ages 7–18, designed to build fluent speakers, thoughtful readers and confident writers.</p>
+                <div class="hero-actions">
+                    <a class="button" href="#trial">Book a free trial <span>→</span></a>
+                    {% if brochure %}
+                    <a class="button button-outline" href="{% url 'download_brochure' %}">Explore Our Programmes</a>
+                    {% else %}
+                    <a class="button button-outline" href="#programmes">Explore Our Programmes</a>
+                    {% endif %}
+                </div>
+                <div class="trust-row">
+                    <div><span class="trust-icon">★</span><small>4.9 average<br><b>parent rating</b></small></div>
+                    <div><span class="trust-icon">⌂</span><small>Online &amp;<br><b>in-person</b></small></div>
+                    <div><span class="trust-icon">✓</span><small>Friendly, expert<br><b>English tutors</b></small></div>
+                </div>
+            </div>
+
+            <div class="hero-visual" aria-label="Two students enjoying an English study session">
+                <div class="doodle doodle-one">a b c</div>
+                <div class="doodle doodle-two">“ ”</div>
+                <img src="{% static 'assets/english-hero.png' %}" alt="Two students reading and writing together">
+                <div class="lesson-card">
+                    <div class="gift-icon">Aa</div>
+                    <div>
+                        <strong>A lesson made for them</strong>
+                        <p>Every student gets a personal learning plan — from phonics to exam prep.</p>
+                    </div>
+                    <div class="owl" aria-hidden="true"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="blue-section" id="approach">
+            <div class="wave wave-one"></div>
+            <div class="wave wave-two"></div>
+            <div class="section-content">
+                <p class="script">More than grammar rules.</p>
+                <h2>A place where their voice comes alive.</h2>
+                <p class="section-intro">Every lesson blends encouragement, structure and real progress — so learners feel heard, capable and excited to use English.</p>
+
+                {% include "freetest.html" with assessment_section=True %}
+
+                <div class="benefits" id="programmes">
+                    <article>
+                        <div class="benefit-icon">📖</div>
+                        <h3>Reading that clicks</h3>
+                        <p>Phonics, comprehension and literature taught in a way that sparks curiosity.</p>
+                    </article>
+                    <article>
+                        <div class="benefit-icon">💬</div>
+                        <h3>Confident conversation</h3>
+                        <p>Practical speaking and listening activities that make new words feel natural.</p>
+                    </article>
+                    <article>
+                        <div class="benefit-icon">✍️</div>
+                        <h3>Writing with purpose</h3>
+                        <p>Clear, creative writing skills for school, exams and life beyond the classroom.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="founder-section" id="about">
+            <div class="founder-photo" role="img" aria-label="Portrait area reserved for the founder">
+                <img src="{% static 'assets/founder.png' %}" alt="Professor and founder of Omni-at English" onerror="this.hidden=true">
+                <div class="founder-placeholder">
+                    <span>Portrait area</span>
+                    <strong>Founder image</strong>
+                    <small>Add founder.png to static/assets</small>
+                </div>
+            </div>
+            <div class="founder-copy">
+                <span class="mini-label">Meet our founder</span>
+                <p class="founder-script">Built by an educator, not a corporation.</p>
+                <h2>One professor’s belief that every learner deserves to be heard.</h2>
+                <p>Omni-at English was founded by a dedicated professor with a simple idea: English learning should be personal, encouraging and connected to the way each student actually thinks.</p>
+                <p>After years of teaching, mentoring and observing where traditional classrooms leave learners behind, our founder created a more human approach—one that combines academic expertise with patient guidance, meaningful conversation and measurable progress.</p>
+                <blockquote>“We do more than teach English. We help learners find the confidence to express who they are.”</blockquote>
+                <div class="founder-signature">
+                    <strong>Professor &amp; Founder</strong>
+                    <span>Omni-at English</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="trial-section" id="trial">
+            <div>
+                <span class="mini-label">Your first step</span>
+                <h2>Let’s find the right English path for your child.</h2>
+            </div>
+            <a class="button button-yellow" href="mailto:hello@omniat.com">Book a free trial <span>→</span></a>
+        </section>
+    </main>
+
+    {% include "freetest.html" with assessment_modal=True %}
+    {{ assessment_questions|json_script:"admin-assessment-questions" }}
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/testExam.js' %}"></script>
+</body>
+</html>
