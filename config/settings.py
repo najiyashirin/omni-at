@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,7 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7c_-9d3nz!2g_)@=fwj_**#g+wba1l=w_xcb0jl+e_nkv&pp2x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Keep Django's convenient development behavior locally, but never enable debug
+# mode on a Vercel deployment unless it is explicitly requested.
+DEBUG = os.getenv("DJANGO_DEBUG", "False" if os.getenv("VERCEL") else "True").lower() in {"1", "true", "yes"}
 
 ALLOWED_HOSTS = [
     ".vercel.app",
@@ -46,6 +49,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # Django's development server serves static assets automatically. WhiteNoise
+    # lets the deployed WSGI app serve the files collected during Vercel's build.
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -70,7 +76,8 @@ TEMPLATES = [
         },
     },
 ]
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -127,4 +134,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
